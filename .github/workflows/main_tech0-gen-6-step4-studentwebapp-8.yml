@@ -4,28 +4,18 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch: # この行によりGitHub UIから手動でトリガーできます
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-latest # GitHubのランナーOSを指定
 
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.10'  # Pythonのバージョンはプロジェクトに合わせて設定
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+    - uses: actions/checkout@v2 # リポジトリのチェックアウト
 
     - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@v2
+      uses: azure/webapps-deploy@v3 # Azure Web Appへのデプロイを行うアクション
       with:
-        app-name: 'tech0-gen-6-step4-studentwebapp-8'  # Web Appの名前
-        slot-name: 'production'  # スロット名、必要に応じて設定
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: '.'
+        app-name: 'tech0-gen-6-step4-studentwebapp-8' # 実際のAzure Web Appの名前を設定
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} # 発行プロファイルをGitHubシークレットから取得
+        package: '.' # デプロイするファイルが含まれるディレクトリまたはパッケージ
