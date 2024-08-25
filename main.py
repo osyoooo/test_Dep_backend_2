@@ -13,12 +13,9 @@ DB_HOST = os.getenv('DB_HOST')
 DB_USER = os.getenv('DB_USER')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_NAME = os.getenv('DB_NAME')
-DB_SSL_CA = os.getenv('DB_SSL_CA')
 
 # 接続文字列を生成
 DATABASE_URL = f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
-if DB_SSL_CA:
-    DATABASE_URL += f"?ssl_ca={DB_SSL_CA}"
 
 app = FastAPI()
 Base = declarative_base()
